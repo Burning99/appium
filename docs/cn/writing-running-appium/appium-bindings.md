@@ -1164,8 +1164,8 @@ driver.update_settings({"someSetting": true})
 ```java
 // java
 JsonObject settings = driver.getSettings()
-// java-client doesn't support setting arbitrary settings, just settings which are already provided by appium.
-// So for the 'ignoreUnimportantViews' setting, the following method exists:
+// java 客户端不支持设置任意的设置项，只能设置 appium 当前支持的部分。
+// 所以对于 `ignoreUnimportantViews`（译者注：忽略不重要的视图，即 android uiautomator 上的压缩后 xml ）这个设置项，对应存在下面这个设置方法：
 driver.ignoreUnimportantViews(true);
 ```
 
@@ -1184,8 +1184,8 @@ $this->updateSettings(array('cyberdelia' => "open"));
 ```csharp
 // c#
 Dictionary<String, Object>settings = driver.GetSettings();
-// dotnet-driver doesn't support setting arbitrary settings, just settings which are already provided by appium.
-// So for the 'ignoreUnimportantViews' setting, the following method exists:
+// .net 客户端不支持设置任意的设置项，只能设置 appium 当前支持的部分。
+// 所以对于 `ignoreUnimportantViews`（译者注：忽略不重要的视图，即 android uiautomator 上的压缩后 xml ）这个设置项，对应存在下面这个设置方法：
 driver.IgnoreUnimportantViews(true);
 ```
 
@@ -1193,7 +1193,7 @@ driver.IgnoreUnimportantViews(true);
 
 Appium 的桌面应用支持 OS X, Windows 及 Linux.
 
-- [Appium Desktop][https://www.github.com/appium/appium-desktop/releases/latest]
+- [Appium Desktop](https://www.github.com/appium/appium-desktop/releases/latest)
 
 
 本文由 [thanksdanny](https://github.com/thanksdanny) 翻译，由 [chenhengjie123](https://github.com/chenhengjie123) 校验。
