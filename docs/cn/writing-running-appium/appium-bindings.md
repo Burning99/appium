@@ -2,15 +2,15 @@
 
 Appium 支持以下语言的客户端类库：
 
-语言 | 源码
-      :--|--:
-[Ruby][rubygems]              | [GitHub](https://github.com/appium/ruby_lib)
-[Python][pypi]                | [GitHub](https://github.com/appium/python-client)
-[Java][maven]                 | [GitHub](https://github.com/appium/java-client)
-[JavaScript][npm]             | [GitHub](https://github.com/admc/wd)
-[PHP][php]                    | [GitHub](https://github.com/appium/php-client)
-[C#][nuget]                   | [GitHub](https://github.com/appium/appium-dotnet-driver)
-[Objective-C][cocoapods]      | [GitHub](https://github.com/appium/selenium-objective-c)
+|语言 | 源码|
+|:---|---:|
+| [Ruby][rubygems]              | [GitHub](https://github.com/appium/ruby_lib) |
+| [Python][pypi]                | [GitHub](https://github.com/appium/python-client) |
+| [Java][maven]                 | [GitHub](https://github.com/appium/java-client) |
+| [JavaScript][npm]             | [GitHub](https://github.com/admc/wd) |
+| [PHP][php]                    | [GitHub](https://github.com/appium/php-client) |
+| [C#][nuget]                   | [GitHub](https://github.com/appium/appium-dotnet-driver) |
+| [Objective-C][cocoapods]      | [GitHub](https://github.com/appium/selenium-objective-c) |
 
 [rubygems]:       http://rubygems.org/gems/appium_lib
 [pypi]:           https://pypi.python.org/pypi/Appium-Python-Client
@@ -21,7 +21,7 @@ Appium 支持以下语言的客户端类库：
 [cocoapods]:      https://github.com/appium/selenium-objective-c
 
 
-注意，一些方法类似 `endTestCoverage()` 目前并不能完全支持。当[这个问题](https://github.com/appium/appium/issues/2448)被解决后，适当的覆盖率支持才会被添加。如果你仍然想使用这些方法，请参考 GitHub 上关于 bindings 的文档。
+注意，一些方法类似 `endTestCoverage()` 目前并不能完全支持。当[这个问题](https://github.com/appium/appium/issues/2448)被解决后，覆盖率支持才会被添加。如果你仍然想使用这些方法，请参考 GitHub 上关于 bindings 的文档。
 
 ### 锁定
 
@@ -64,47 +64,61 @@ driver.LockDevice(3);
 
 ### 将应用切换至后台
 
-将当前的应用切换到后台。
+将当前的应用切换到后台，然后可以让其在指定时间内回到前台，或者让它一直留在后台。
+
+传递给这个方法的参数有两种类型：
+
+1. 一个整型（秒）：表示后台状态维持多久。-1 表示持续置于后台。这种风格的参数已经被废弃。
+2. 一个看起来像 `{"timeout": secs}` 的对象。里面的 `secs` 是含义和第一个类型一样的整型数字（即表示置于后台多少秒），或者为 `null` （表示持续置于后台）。
 
 ```ruby
 # ruby
-background_app 5
+background_app 5  # 置于后台，持续5秒
+background_app -1  # 持续置于后台
 ```
 
 ```python
 # python
-driver.background_app(5)
+driver.background_app(5)  # 置于后台，持续5秒
+driver.background_app(-1) # 持续置于后台
+driver.background_app({'timeout': None}) # 持续置于后台
 ```
 
 ```java
 // java
-driver.runAppInBackground(5);
+driver.runAppInBackground(5);  // 置于后台，持续5秒
+driver.runAppInBackground(-1);  // 持续置于后台
 ```
 
 ```javascript
 // javascript
-driver.backgroundApp(5)
+driver.backgroundApp(5);  // 置于后台，持续5秒
+driver.backgroundApp(-1); // 持续置于后台
+driver.backgroundApp({timeout: null}); // 持续置于后台
 ```
 
 ```php
 // php
 $this->backgroundApp(5);
+$this->backgroundApp(-1);
 ```
 
 ```csharp
 // c#
 driver.BackgroundApp(5);
+driver.BackgroundApp(-1);
 ```
 
 ```objectivec
 // objective c
 [driver runAppInBackground:3];
+[driver runAppInBackground:-1];
 ```
 
 ### 收起键盘
 
 收起键盘。
-*注意*: 在 iOS，这辅助功能并不能保证一定有效。因为没有用于隐藏键盘的 automation hook，而且应用是允许用户去使用各种策略去收起键盘的，无论是点击键盘以外的区域，还是向下滑动诸如此类...相比于使用该方法，我们更加鼓励你去思考 _用户_ 在应用中是如何收起键盘，并告诉 Appium 去执行，代替掉内些操作（滑动，点击一个固定的坐标，等等...）。话虽如此，但默认的行为是可能是最能帮助到你的。
+*注意*: 在 iOS，这辅助功能并不能保证一定有效。因为没有用于隐藏键盘的自动化钩子方法（译者注：可以理解为 iOS 没有提供隐藏键盘的 API），而且应用是允许用户去使用各种策略去收起键盘的，无论是点击键盘以外的区域，还是向下滑动诸如此类...相比于使用该方法，我们更加鼓励你去思考 _用户_ 在应用中是如何收起键盘（如滑动，点击一个固定的坐标，等等...），并让 Appium 去执行这些方法，而不是调用这个 API 。话虽如此，但这里默认的行为还是可能帮助到你的。
 
 
 ```ruby
@@ -142,6 +156,7 @@ driver.HideKeyboard("Done");
 // objective c
 [driver hideKeyboard];
 ```
+
 
 ### 启动 Activity
 
@@ -188,7 +203,6 @@ $this->startActivity(array("appPackage" => "com.example.android.apis",
 
 打开通知栏，*仅支持 Android*。
 
-
 ```java
 // java
 driver.openNotifications();
@@ -226,7 +240,7 @@ $this->openNotifications();
 
 ### 应用是否已安装
 
-检查应用是否已被安装。
+检测应用是否已被安装。
 
 ```ruby
 # ruby
@@ -303,9 +317,10 @@ driver.InstallApp("path/to/my.apk");
 [driver installAppAtPath:@"path/to/my.apk"];
 ```
 
+
 ### 卸载应用
 
-移除设备上的应用。
+卸载设备上的应用。
 
 ```ruby
 # ruby
@@ -422,7 +437,7 @@ driver.CloseApp();
 
 ### 启动（Launch）
 
-为 desired capabilities 启动一个 session。请注意只有设置了 autoLaunch=false 关键字时才会生效。使用 `start_activity` 这个参数不是为了随意启动一个应用或 activities。这是在你设置了 autoLaunch=false 后，用来继续执行初始化（"launch"）流程的。
+为 desired capabilities 启动一个 session。请注意只有设置了 autoLaunch=false 关键字时才会生效。这不是为了随意启动一个应用或 activities ——如果你想这么做，请使用 `start_activity` 这个 desired capability 的参数。这个方法的使用场景是在你设置了 autoLaunch=false 后，用来继续执行初始化（"launch"）流程的。（译者注：举个例子，国产系统经常会在应用安装时弹出提示窗阻碍安装，此时可以通过 autoLaunch=false 来让应用安装后先执行你的脚本来关掉弹窗，然后再用这个函数来继续启动应用。）
 
 ```ruby
 # ruby
@@ -461,7 +476,7 @@ driver.LaunchApp();
 
 ### 重置
 
-重置应用。
+重置应用。（译者注：类似于清除缓存）
 
 ```ruby
 # ruby
@@ -498,9 +513,9 @@ driver.ResetApp();
 [driver resetApp];
 ```
 
-### 可用的 Contexts
+### 可用的上下文（Contexts）
 
-列出所有可用的 contexts。
+列出所有可用的上下文（contexts）。
 
 ```ruby
 # ruby
@@ -537,9 +552,9 @@ driver.GetContexts()
 NSArray *contexts = driver.allContexts;
 ```
 
-### 当前 context
+### 当前上下文（context）
 
-列出当前的 context。
+列出当前的上下文（context）。
 
 ```ruby
 # ruby
@@ -576,9 +591,9 @@ driver.GetContext()
 NSString *context = driver.context;
 ```
 
-### 切换至默认的 context
+### 切换至默认的上下文（context）
 
-切换回默认的 context。
+切换回默认的上下文（context）。（译者注：一般就是原生上下文 “NATIVE_APP”）
 
 ```ruby
 # ruby
@@ -617,7 +632,7 @@ driver.SetContext();
 
 ### 应用的字符串
 
-获得应用的字符串。
+获得应用的字符串。（译者注：这里实际指的是返回应用的多语言文本，即每个 string 变量及在指定语言上的显示内容。例如 `{"action_forgot_password":"Forgot your password?"}` 。在 android 上对应的是项目中的 `strings.xml` 多语言配置文件）
 
 ```ruby
 # ruby
@@ -698,7 +713,7 @@ NSError *err;
 
 ### 当前 Activity
 
-获取当前的 Acticity，但仅支持 Android。
+获取当前的 Acticity。仅支持 Android。
 
 ```ruby
 # ruby
@@ -736,6 +751,41 @@ NSError *err;
 [driver currentActivity];
 ```
 
+### 当前包名（package）
+
+获取当前包名（package）。仅支持 Android 。
+
+```ruby
+# ruby
+current_package
+```
+
+```python
+# python
+driver.current_package
+```
+
+```java
+// java
+driver.getCurrentPackage();
+```
+
+```javascript
+// javascript
+driver.getCurrentPackage().then(function (package) { /*...*/ })
+```
+
+```php
+// php
+$this->currentPackage();
+```
+
+```csharp
+// c#
+driver.GetCurrentPackage();
+```
+
+
 ### 点击操作 / 多点触控操作
 
 用于生成点击操作的 API。这部分文档的内容将会很快被补充进来。
@@ -744,7 +794,7 @@ NSError *err;
 ```ruby
 # ruby
 touch_action = Appium::TouchAction.new
-element  = find_element :name, 'Buttons, Various uses of UIButton'
+element  = find_element :accessibility_id, 'Buttons, Various uses of UIButton'
 touch_action.press(element: element, x: 10, y: 10).perform
 ```
 
@@ -975,11 +1025,11 @@ driver.Zoom(100, 200);
 
 ### 滚动到
 
-滚动到某个元素。
+滚动到指定的元素。
 
 ```ruby
 # ruby
-element = find_element :name, "Element Name"
+element = find_element :accessibility_id, "Element ID"
 execute_script "mobile: scroll", direction: "down", element: element.ref
 ```
 
@@ -999,7 +1049,7 @@ js.executeScript("mobile: scroll", scrollObject);
 
 ```javascript
 // javascript
-return driver.elementByName().then(function (el) {
+return driver.elementByAccessibilityId().then(function (el) {
   driver.execute("mobile: scroll", [{direction: "down", element: el.value}]);
 });
 ```
@@ -1018,9 +1068,9 @@ scrollObject.Add("element", <element_id>);
 ((IJavaScriptExecutor)driver).ExecuteScript("mobile: scroll", scrollObject));
 ```
 
-### 拉出（pull）文件
+### 拉取（pull）文件
 
-从设备上拉出文件。
+从设备上拉取文件。
 
 ```ruby
 # ruby
@@ -1139,12 +1189,11 @@ Dictionary<String, Object>settings = driver.GetSettings();
 driver.IgnoreUnimportantViews(true);
 ```
 
-
 ### Appium 桌面应用
 
-Appium 的桌面应用支持 OS X 与 Windows。
+Appium 的桌面应用支持 OS X, Windows 及 Linux.
 
-- [Appium.app for OS X][bitbucket]
-- [Appium.exe for Windows][bitbucket]
+- [Appium Desktop][https://www.github.com/appium/appium-desktop/releases/latest]
 
-[bitbucket]: https://bitbucket.org/appium/appium.app/downloads/
+
+本文由 [thanksdanny](https://github.com/thanksdanny) 翻译，由 [chenhengjie123](https://github.com/chenhengjie123) 校验。
