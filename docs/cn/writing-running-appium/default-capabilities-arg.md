@@ -53,3 +53,5 @@ Appium 1.5 移除了大部分旧版本遗留的 CLI 标识；其余部分可转�
 | --localizable-strings-dir | localizableStringsDir   |
 | --show-ios-log            | showIOSLog              |
 | --reboot                  | reboot                  |
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译

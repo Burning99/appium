@@ -146,3 +146,5 @@
 |------|-----|----------|
 |Running ios test|`[INST STDERR] posix spawn failure; aborting launch`|你的应用没有分别对应模拟器或者真机去编译对应版本.|
 |Running mobile safari test|`error: Could not prepare mobile safari with version '7.1'`|你可能需要再次运行授权的脚本以确保 iOS SDK 文件是可写状态。详情请查阅 [running on OSX documentation](./running-on-osx.md#authorizing-ios-on-the-computer)|
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

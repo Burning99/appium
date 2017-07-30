@@ -1,55 +1,55 @@
-# Appium Version, Branch, and Release Models
+# Appium 版本, 分支和发布模式
 
-## Versioning
+## 版本控制
 
-Following 1.3.6, Appium switched to semantic versioning: `major | minor | patch | [-beta{N}]`. E.g., `1.4.1` or `2.4.0-Beta4`.
-* Major: API-breaking changes; new features
-* Minor: Backward-compatible changes; may or may not include new features
-* Patch: Quick fix engineering; no new features
+1.3.6版本之后, Appium 使用语义版本控制： `major | minor | patch | [-beta{N}]`. 例如, `1.4.1` or `2.4.0-Beta4`.
+* Major: API 突破性变化；新功能
+* Minor: 向后兼容的变化; 可能包含或不包括新功能
+* Patch: 快速修复工程; 没有新功能
 
-This makes Appium’s versioning consistent with other major projects in the NPM ecosystem. It also works well with the trunk-based development model described below.
+这使得 Appium 的版本与 NPM 生态系统中的其他主要项目一致。它也适用于下面描述的基于主干的开发模式。
 
-## Branching and Release Model
+## 分支和发布模式
 
-Appium uses [Trunk Based Development](http://paulhammant.com/2013/04/05/what-is-trunk-based-development/). As Paul Hammant explains,
+Appium 使用 [Trunk Based Development](http://paulhammant.com/2013/04/05/what-is-trunk-based-development/)。正如 Paul Hammant 所说,
 
->Trunk Based Development (TBD) is where all developers (for a particular deployable unit) commit to one shared branch under source-control. That branch is going to be colloquially known as trunk. 
+>Trunk Based Development (TBD) 是所有开发人员（针对特定可部署单元）在源控制下提交到一个共享分支。那个分支俗称为 trunk。
 >
->… Branches are made for a release. Developers are not allowed to make branches in that shared place. Only release engineers commit to those branches, and indeed create each release branch. They may also cherry-pick individual commits to that branch if there is a desire to do so. 
+>⋯ 分支是为了发布而创建的。开发人员不得在共享的地方建立分支。只有发布工程师才能对这些分支进行 commit，并且实际上得去创建这些分支。如果有必要的话，发布工程师可能会 cherry-pick 一些提交到发布分支。
 >
->… The release branch that will live for a short time before it is replaced by another release branch, takes everything from trunk when it is created. In terms of merges, only cherry-picks FROM trunk TO the release branch are supported.
+>⋯ 发布分支将在短时间内被另一个发布分支替代，每个发布分支在创建时要从 trunk 中获取所有内容。在合并方面，只支持从主干到发布分支的 cherry-pick。
 
-## Milestones
+## 里程碑
 
-The versioning and release model shape how we set Appium milestones. The next milestone is always a Major.Minor release. Triaged bugs and features that aren't associated with the next Major.Minor release should be backlogged in eponymously-named milestones (i.e., `Bugs` and `Features`). In general, our goal is a minor release every 8 to 10 weeks. This includes approximately a week of Beta testing and another week for fixes and final changes. Hotfixes are released (Major.Minor.Patch) as needed between the Major.Minor versions. This allows us to get fixes out quickly while minimizing the risk of regression.
+我们根据版本控制和发布模式来设定 Appium 的里程碑. 下一个里程碑一直会是 Major.Minor 的发布。 与接下来要发布的 Major.Minor 版本不相干的产品缺陷修复和新功能，将会被积压到下一个以修复 BUG 或者新功能的命名分支上发布（即 Bugs 和 Features）。一般来说，我们每次的 minor 发布周期为 8 到 10 周一次。这包括大约一周的 Beta 测试和另外一周的修复和最终更改。 修补程序在 Major.Minor 版本之间根据需要发布（Major.Minor.Patch）。这样我们可以快速解决问题，同时最大限度地减少回归的风险。
 
 ## Workflow
 
-For Appium, the basic flow looks like this:
+对于Appium，基本流程如下所示：
 
-   1. All PRs go to `master` (aka `trunk`).
-   2. Whoever is leading a release acts as the "release engineer" (RE). When the release is ready to be shared (“Beta" status or better), the RE creates a new branch `v[Major].[Minor].[Patch]-branch`.
-   3. PRs continue to go to `master`.
-   4. If the release requires fixes committed to `master`, the RE cherrypicks those commits into the release branch. 
-   5. The release branch can be amended with hotfixes for subsequent patch releases. This allows the team to carefully scope small changesets for quick release. Fixes can also be pulled into previous release  branches branches when needed.  
-   6. Rinse, repeat.
+   1. 所有 PRs 都提交到 `master` (aka `trunk`).
+   2. 由发布工程师（Release engineer，简称RE）来主导发布行为。 当发布分支已经准备好共享（“Beta”状态或更好）时，RE将创建一个新的分支v[Major].[Minor].[Patch]-branch。
+   3. PRs 持续提交到 `master`.
+   4. 如果有修复相关的发布提交到 `master`, RE将这些提交到发布分支。
+   5. 发布分支可以修改与后续补丁修补程序发布。 这使得团队可以小心地将小型变更集放在一起，以便快速发布。修复也可以在需要时被并入以前的分支。
+   6. 冲洗，重复。
 
-Developers can maintain working branches however they like. These are strictly for personal use. All “official” branches should conform to the model defined above.
+开发人员可以随他们的意愿维护他们开发中的分支，这些仅是个人使用。但所有“官方”分支机构均应符合上述规定。
 
-### Example
+### 例如
 
-   1. It’s 1 June. The Appium team plans on releasing 20.1-beta on 15 July and the full 20.1 release on 1 August.
-   2. For the next six weeks, the team commits their work to `master`.
-   3. On 15 July, the acting RE creates `20.1-branch`. The first node is tagged “20.1.0 Beta”.
-   4. One team member begins fixing bugs in the beta. The fixes are committed to `master`.
-   5. Other contributors begin committing changes that are planned for 20.2. These also go to `master`.
-   6. The RE cherrypicks the fixes into `20.1-branch`, leaving the other changes on `master`.
-   7. The team celebrates that all the beta bugs are fixed for the 1 August release.
-   8. The RE tags HEAD of `20.1-branch` as `20.1.0` and publishes the release.
-   9. A few weeks later, a crash is discovered in `20.1.0` and users need a fix NOW.
-   10. The acting RE pulls the crash fix from master into `20.1-branch`, tags HEAD as `20.1.1`, and publishes the hotfix.
-   11. The cycle repeats once the `20.2` release is ready. 
+   1. 今天 6 月 1 日， Appium 团队计划于7月15日发布 20.1-beta，8 月 1 日发布全面的 20.1 版本。
+   2. 在接下来的六个星期里，这个团队将他们的代码提交到 `master`.
+   3. 7月15日，执行 RE 创建 20.1-branch。第一个节点被标记为 “20.1.0 Beta”。
+   4. 一个团队成员开始修复测试版中的错误。这些修复会被提交到 `master`.
+   5. 其他贡献者开始按计划提交代码到 `20.2` 中去。这些内容也会被提交到 `master`。 
+   6. RE把修复的内容cherry picks到 `20.1-branch`, 并保留 `master` 的其他变更。
+   7. 该团队庆祝 8 月 1 日发布的所有测试版本都已修复。
+   8. RE 标签的 HEAD 20.1-branch 为 20.1.0 发布版本。
+   9. 几周后，发现 20.1.0 存在崩溃，用户现在需要修复。
+   10. 执行 RE 将主机的崩溃修复程序拉入 20.1-branch，将 HEAD 标记为 20.1.1 并发布修补程序。
+   11. 一旦 20.2 发布完毕，循环就会重复。
 
-
+本文由 [大东](https://testerhome.com/Anikikun) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。
 
 

@@ -1,31 +1,21 @@
-## Automating Mobile Gestures For iOS With WebDriverAgent/XCTest Backend
+## 使用 WebDriverAgent/XCTest Backend 进行iOS自动化手势操作
 
-Unfortunately Apple's XCTest framework does not natively support W3C standards for
-TouchAction interface implementation. Although, it provides rich set of gestures,
-inluding these, that are unique for iOS platform. It is possible to directly invoke these
-gestures in Appium starting from version 1.6.4-beta.
+很可惜，苹果官方的 XCTest 框架本身并不支持 TouchAction 接口实现的 W3C 标准。尽管如此，XCTest 提供了非常丰富的手势操作，这些操作都是 iOS 平台独有的。你可以在 1.6.4-beta 版本的 Appium 中开始使用这些手势操作。
 
-It is important to rememeber that XCTest and WDA are being constantly changed.
-This means all "mobile: *" commands can be also subject of change in Appium
-without any preliminary notice.
+需要特别注意的是目前XCTest和WDA正在不断优化改变的阶段，这意味着所有 `mobile: *` 的命令可能会在没任何通知的情况下就被调整更改。
 
 
 ### mobile: swipe
 
-This gesture performs a simple "swipe" gesture on the particular screen element or
-on the application element, which is usually the whole screen. This method does not
-accept coordnates and siply emulates single swipe with one finger. It might be
-useful for such cases like album pagination, switching views, etc. More advanced
-cases may require to call "mobile: dragFromToForDuration", where one can supply
-coordinates and duration.
+这个手势是在指定的屏幕上的控件或App的控件上执行“滑动”操作，一般是针对整个屏幕。这个方法不支持通过坐标来操作，并且仅仅是简单的模拟单个手指滑动。这个方法对于诸如相册分页、切换视图等情况可能会发挥比较大的作用。更复杂的场景可能需要用到`mobile:dragFromToForDuration`，这个方法支持传坐标（coordinates ）和滑动持续时间（duration）。
 
-#### Supported arguments
 
- * _direction_: Either 'up', 'down', 'left' or 'right'. The parameter is mandatory
- * _element_: The internal element identifier (as hexadecimal hash string) to swipe on.
- Application element will be used instead if this parameter is not provided
+#### 支持参数
 
-#### Usage examples
+ * _direction_: 'up', 'down', 'left' or 'right'.  这4个参数是固定的。
+ * _element_: 需要滑动的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
+
+#### 用法示例
 
 ```java
 // Java
@@ -39,33 +29,18 @@ js.executeScript("mobile: swipe", params);
 
 ### mobile: scroll
 
-Scrolls the element or the whole screen. Different scrolling strategies are supported.
-Arguments define the choosen strategy: either 'name', 'direction', 'predicateString' or
-'toVisible' in that order. All strategies are exclusive and only one strategy
-can be applied at a single moment of time. Use "mobile: scroll" to emulate precise
-scrolling in tables or collection views, where it is already known to which element
-the scrolling should be performed. Although, there is one known limitation there: in case
-it is necessary to perform too many scroll gestures on parent container to reach the
-necessary child element (tens of them) then the method call may fail.
+滚动元素或整个屏幕。支持不同的滚动策略。该方法提供了4个可选择滑动策略：按照顺序有“name”，“direction”，“predicateString”或“toVisible”。所有的滑动策略都是排他性的，一次滑动只能选择一个策略。你可以使用`mobile:scroll`来对表格中或者集合视图中的某个已知控件进行精确的滚动操作。然而目前有一个已知的局限问题：如果需要在父容器上执行太多的滚动手势来达到必要的子元素（其中几十个），则方法调用可能会失败。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to scroll on.
- Application element will be used if this argument is not set
- * _name_: the accessibility id of the child element, to which scrolling is performed.
- The same result can be achieved by setting _predicateString_ argument to
- 'name == accessibilityId'. Has no effect if _element_ is not a container
- * _direction_: Either 'up', 'down', 'left' or 'right'. The main difference from
- _swipe_ call with the same argument is that _scroll_ will try to move the current viewport
- exactly to the next/previous page (the term "page" means the content, which fits into
- a single device screen)
- * _predicateString_: the NSPredicate locator of the child element, to which
- the scrolling should be performed. Has no effect if _element_ is not a container
- * _toVisible_: Boolean parameter. If set to _true_ then asks to scroll to
- the first visible _element_ in the parent container. Has no effect if _element_ is
- not set
+ * _element_: 需要滚动的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
+ * _name_: 需要执行滚动的子控件的`accessibility id`。
+ 将`predicateString`参数设置为`“name == accessibilityId”`可以实现相同的结果。如果`element`不是容器，则不起作用。
+ * _direction_:  'up', 'down', 'left' or 'right'. 该参数与`swipe`中的比，差别在于`scroll`会尝试将当前界面完全移动到下一页。（`page`一词表示单个设备屏幕中的所有内容）
+ * _predicateString_: 需要被执行滚动操作的子控件的NSPredicate定位器。如果控件不是容器，则不起作用。
+ * _toVisible_: 布尔类型的参数。如果设置为`true`，则表示要求滚动到父控件中的第一个可见到的子控件。如果`element`未设置，则不生效。
 
-#### Usage examples
+#### 用法示例
 
 ```python
 # Python
@@ -75,17 +50,15 @@ driver.execute_script('mobile: scroll', {'direction': 'down'});
 
 ### mobile: pinch
 
-Performs pinch gesture on the given element or on the application element.
+在给定的控件或应用程序控件上执行捏合手势。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to pinch on.
- Application element will be used instead if this parameter is not provided
- * _scale_: Pinch scale of type float. Use a scale between 0 and 1 to "pinch close" or
- zoom out and a scale greater than 1 to "pinch open" or zoom in. Mandatory parameter
- * _velocity_: The velocity of the pinch in scale factor per second (float value). Mandatory parameter
+ * _element_: 需要捏合的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
+ * _scale_: 浮动型夹点尺度。使用0和1之间的比例来“捏紧”或缩小，大于1的比例“撑开”或放大。强制参数
+ * _velocity_: 每秒缩放速度（浮点值）。强制参数
 
-#### Usage examples
+#### 用法示例
 
 ```ruby
 # Ruby
@@ -95,15 +68,15 @@ execute_script 'mobile: pinch', scale: 0.5, velocity: 1.1, element: element.ref
 
 ### mobile: doubleTap
 
-Performs double tap gesture on the given element or on the screen.
+在指定控件上或屏幕上执行双击手势。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to double tap on
- * _x_: Screen x tap coordinate of type float. Mandatory parameter only if _element_ is not set
- * _y_: Screen y tap coordinate of type float. Mandatory parameter only if _element_ is not set
+ * _element_: 需要双击的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
+ * _x_: 屏幕x轴坐标点，浮点型. 仅当`element`未设置时才是强制参数
+ * _y_: 屏幕y轴坐标点，浮点型. 仅当`element`未设置时才是强制参数
 
-#### Usage examples
+#### 用法示例
 
 ```javascript
 // javascript
@@ -113,16 +86,16 @@ driver.execute('mobile: doubleTap', {element: element.value.ELEMENT});
 
 ### mobile: touchAndHold
 
-Performs long press gesture on the given element or on the screen.
+在指定控件上或屏幕上长按的手势操作。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to long tap on
- * _duration_: The float duration of press action in seconds. Mandatory patameter
- * _x_: Screen x long tap coordinate of type float. Mandatory parameter only if _element_ is not set
- * _y_: Screen y long tap coordinate of type float. Mandatory parameter only if _element_ is not set
-
-#### Usage examples
+ * _element_: 需要长按的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
+ * _duration_: 长按的持续时间（秒），浮点型。强制性参数
+ * _x_: 屏幕x轴坐标点，浮点型. 仅当`element`未设置时才是强制参数
+ * _y_: 屏幕y轴坐标点，浮点型. 仅当`element`未设置时才是强制参数
+ 
+#### 用法示例
 
 ```csharp
 // c#
@@ -135,15 +108,13 @@ tfLongTap.Add("duration", 2.0);
 
 ### mobile: twoFingerTap
 
-Performs two finger tap gesture on the given element or on the application element.
+在给定元素或应用程序元素上执行两个手指点击手势。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to double tap on.
- Application element will be used instead if this
- parameter is not provided
+ * _element_: 需要两只手指操作的控件ID（作为十六进制哈希字符串）。如果没有提供该参数的话，则会使用App的控件作为替代。
 
-#### Usage examples
+#### 用法示例
 
 ```csharp
 // c#
@@ -155,18 +126,15 @@ tfTap.Add("element", element.Id);
 
 ### mobile: tap
 
-Performs tap gesture by coordinates on the given element or on the screen.
+在指定控件或屏幕上的坐标执行点击手势。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: The internal element identifier (as hexadecimal hash string) to long tap on.
- _x_ and _y_ tap coordinates will be calulated relatively to the current element position on the
- screen if this argument is provided. Otherwise they should be calculated
- relatively to screen borders.
- * _x_: x tap coordinate of type float. Mandatory parameter
- * _y_: y tap coordinate of type float. Mandatory parameter
+ * _element_: 控件ID（作为十六进制哈希字符串）。 如果设置 了`element`参数，则`x`、`y`代表的是以当前`element`为边界的xy轴。若未设置，则`x`,`y`代表的是以手机屏幕为边界。
+ * _x_: x轴坐标，类型为float。强制参数
+ * _y_: y轴坐标，类型为float。强制参数
 
-#### Usage examples
+#### 案例
 
 ```php
 // PHP
@@ -177,22 +145,18 @@ $driver->executeScript("mobile: tap", $params);
 
 ### mobile: dragFromToForDuration
 
-Performs drag and drop gesture by coordinates. This can be done either on an element or
-on the screen
+通过坐标点执行拖放手势。可以在控件上执行，也可以在屏幕上执行。
 
 #### Supported arguments
 
- * _element_: The internal element identifier (as hexadecimal hash string) to perform drag on.
- All the coordinates will be calculated relatively this this element position on the screen.
- Absolute screen coordinates are expected if this argument is not set
- * _duration_: Float number of seconds in range [0.5, 60]. How long the tap gesture at
- starting drag point should be before to start dragging. Mandatory parameter
- * _fromX_: The x coordinate of starting drag point (type float). Mandatory parameter
- * _fromY_: The y coordinate of starting drag point (type float). Mandatory parameter
- * _toX_: The x coordinate of ending drag point (type float). Mandatory parameter
- * _toY_: The y coordinate of ending drag point (type float). Mandatory parameter
+ * _element_: 控件ID（作为十六进制哈希字符串）。 如果设置 了`element`参数，则`x`、`y`代表的是以当前`element`为边界的xy轴。若未设置，则`x`,`y`代表的是以手机屏幕为边界。
+ * _duration_: 浮点数范围[0.5,60]。表示开始拖动点之前的点击手势需要多长时间才能开始拖动。强制参数
+ * _fromX_: 起始拖动点的x坐标（类型float）。强制参数
+ * _fromY_: 起始拖动点的y坐标（类型float）。强制参数
+ * _toX_: 结束拖曳点的x坐标（float类型）。强制参数
+ * _toY_: 结束拖动点的y坐标（类型float）。强制参数
 
-#### Usage examples
+#### 用法示例
 
 ```java
 // Java
@@ -210,23 +174,15 @@ js.executeScript("mobile: dragFromToForDuration", params);
 
 ### mobile: selectPickerWheelValue
 
-Performs selection of the next or previous picker wheel value. This might
-be useful if these values are populated dynamically, so you don't know which
-one to select or value selection does not work because of XCTest bug.
+选择下一个或上一个picker wheel的值。 如果这些值是动态的，那么这个方法是能起作用的。XCTest有一个BUG就是你并不能知道要选择哪一个或者当前的选择区域是否生效。
 
-#### Supported arguments
+#### 支持参数
 
- * _element_: PickerWheel's internal element id (as hexadecimal hash string) to perform
- value selection on. The element must be of type XCUIElementTypePickerWheel. Mandatory parameter
- * _order_: Either _next_ to select the value next to the current one
- from the target picker wheel or _previous_ to select the previous one. Mandatory parameter
- * _offset_: The value in range [0.01, 0.5]. It defines how far from picker
- wheel's center the click should happen. The actual distance is culculated by
- multiplying this value to the actual picker wheel height. Too small offset value
- may not change the picker wheel value and too high value may cause the wheel to switch
- two or more values at once. Usually the optimal value is located in range [0.15, 0.3]. _0.2_ by default
+ * _element_: PickerWheel的内部元素id（作为十六进制哈希字符串）执行值选择。元素必须是XCUIElementTypePickerWheel类型。强制参数
+ * _order_:  `next` 选择下一个value，`previous`选择前面一个value。强制参数
+ * _offset_: 区间值： [0.01, 0.5]。它定义了picker wheel的中心距离应该有多远。 通过将该值乘以实际的picker wheel高度来确定实际距离。太小的偏移值可能不会改变picker wheel的值，而过高的值可能会导致picker wheel同时切换两个或多个值。通常最优值位于范围[0.15,0.3]中。默认为0.2
 
-#### Usage examples
+#### 用法示例
 
 ```java
 // Java
@@ -241,17 +197,14 @@ js.executeScript("mobile: selectPickerWheelValue", params);
 
 ### mobile: alert
 
-Performs operations on NSAlert instance.
+对NSAlert实例执行操作。
 
-#### Supported arguments
+#### 支持参数
 
- * _action_: The following actions are supported: _accept_, _dismiss_ and _getButtons_.
- Mandatory parameter
- * _buttonLabel_: The label text of an existing alert button to click on. This is an
- optional parameter and is only valid in combination with _accept_ and _dismiss_
- actions.
+ * _action_: 支持以下操作: `accept`, `dismiss` and `getButtons`。强制参数
+ * _buttonLabel_:  点击已有警报按钮的标签文本。这是一个可选参数，只能与`accept`和`dismiss` 操作相结合才有效。
 
-#### Usage examples
+#### 用法示例
 
 ```python
 # Python
@@ -259,10 +212,9 @@ driver.execute_script('mobile: alert', {'action': 'accept', 'buttonLabel': 'My C
 ```
 
 
-### Advanced Topics
+### 进阶主题
 
-Check [WDA Element Commands API](https://github.com/facebook/WebDriverAgent/blob/master/WebDriverAgentLib/Commands/FBElementCommands.m)
-to get the information about the gestures implemented in Facebook WebDriverAgent.
-Check Apple XCTest documentation on [XCUIElement](https://developer.apple.com/reference/xctest/xcuielement) and
-[XCUICoordinate](https://developer.apple.com/reference/xctest/xcuicoordinate) methods list to get the information
-about all gestures available there.
+查看 [WDA Element Commands API](https://github.com/facebook/WebDriverAgent/blob/master/WebDriverAgentLib/Commands/FBElementCommands.m)
+以获取有关在Facebook WebDriverAgent中实现的手势的信息。
+
+本文由 [大东](https://testerhome.com/Anikikun) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

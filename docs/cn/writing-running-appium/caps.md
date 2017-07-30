@@ -107,7 +107,7 @@
 |----------|-----------|------|
 |`processArguments`|将会传送到 WebDriverAgent 的进程参数与环境|`{ args: ["a", "b", "c"] , env: { "a": "b", "c": "d" } }` 或 `'{"args": ["a", "b", "c"], "env": { "a": "b", "c": "d" }}'`|
 |`wdaLocalPort`|如果这个值被指定了，Mac 主机就会使用这个端口，通过 USB 发送数据到 iOS 设备中。默认的端口与 iOS 设备中 WDA 的端口号是一致的。|例如  `8100`|
-|`showXcodeLog`| 是否显示运行测试时 Xcode 输出日志，如果值设置为 `true` ，则会在启动的时候产生**大量**的额外日志。默认设置为 `false`。|例如  `true`|
+|`showXcodeLog`| 是否显示运行测试时 Xcode 的输出日志，如果值设置为 `true` ，则会在启动的时候产生**大量**的额外日志。默认设置为 `false`。|例如  `true`|
 |`iosInstallPause`| 安装应用程序与启动 WebDriverAgent 之间停止的间隔时间（以毫秒为单位），特别适用于体积较大的包。默认是设置为 `0`。|例如  `8000`|
 |`xcodeConfigFile`|一个可选的 Xcode 可配置文件的完整路径，用于指定在真机上运行 WebDriverAgent 的个人身份或者团队身份的代码签名。|例如  `/path/to/myconfig.xcconfig`|
 |`keychainPath`| 从系统的 keychain 中导出私有开发秘钥的完整路径。在真机测试时与 `keychainPassword` 配合使用。|例如  `/path/to/MyPrivateKey.p12`|
@@ -139,4 +139,6 @@
 |----|-----------|-------|
 |`platformName`| 运行测试时所在的平台  |例如  `Windows`|
 |`deviceName`| 运行测试时所使用设备的名字 | 例如  `WindowsPC`|
-|`app`| 被测 windows 应用的 appID 或被测的 .exe 文件的路径。 查阅[该文档](/docs/en/writing-running-appium/windows-app-testing.md)可了解更多查找 appID 的详细方法。 | 例如  `c24c8163-548e-4b84-a466-530178fc0580_scyf5npe3hv32!App`|
+|`app`| 被测 windows 应用的 appID 或被测的 .exe 文件的路径。 查阅[该文档](/docs/cn/writing-running-appium/windows-app-testing.md)可了解更多查找 appID 的详细方法。 | 例如  `c24c8163-548e-4b84-a466-530178fc0580_scyf5npe3hv32!App`|
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译。由 [lihuazhang](https://github.com/lihuazhang) 校验。

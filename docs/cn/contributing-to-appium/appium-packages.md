@@ -1,58 +1,58 @@
-# Appium in a Nutshell
+# Appium 简述
 
 ![Appium packages](./appium-packages.png)
 
 ## appium
-- runs basic checks
-  - node version (>= 4)
-  - CLI arguments checks
-    - contains all available and supported CLI arguments
-    - check for deprecation and mutual exclusion
-- put logging together
-  - mixture out of npmlog, winston and appium-logger
-- initiates AppiumDriver (extends Basedriver)
-  - assigns iOS/Android/Selendroid/Fake driver to session
-  - creates/deletes Appium session
-- starts baseServer (appium-express)
-  - passes routes given by driver
+- 运行时的基本检查
+  - 节点版本（>= 4）
+  - CLI 参数检查
+    - 包含所有可用和支持的CLI参数
+    - 检是否有冲突和弃用
+- 统一存放日志
+  - 统一存放npmlog, winston和appium-logger
+- 启动AppiumDriver（继承Basedriver）
+  - 为iOS/Android/Selendroid/Fake Driver 建立会话
+  - 创建/删除Appium会话
+- 启动baseServer (appium-express)
+  - 通过驱动给出的路径 
 
-## appium-express (part of appium-base-driver)
-- starts express server (allows x-domain-origin)
-- initialises routes from AppiumDriver
-- timeout handling
-- serves a static page for test purposes
-- connects req/res events to logger
+## appium-express (部分appium basedriver)
+- 启动express server（允许x-domain-origin）
+- 从AppiumDriver初始化
+- 超时处理
+- 提供一个用于测试的静态页面
+- 将req/res事件记入日志
 
-## mobile-json-wire-protocol (part of appium-base-driver)
-- provides list of Appium commands
-- subclassed by drivers that will use the protocol
-  - kind of middleware between client and driver
-  - handles jwp proxy for driver
-- contains error classes for all types of errors
-  - sanitises error responses
-- (un)wraps params to commands
-- checks required params, validates params
+## mobile-json-wire-protocol (部分appium basedriver)
+- 提供了Appium命令列表
+- 通过协议的驱动子类
+  -客户端和驱动程序之间的中间件
+  - 处理驱动程序的jwp代理
+- 包含所有类型错误的错误类
+  - 消除错误响应
+- 将参数封装/解封到命令中
+- 检查所需参数，验证参数
 
-## appium-base-driver
-- designed to have a single testing session per instantiation
-- contains constraints on caps (platformName has to be present, etc)
-- validates capabilities
-- runs chain of promised commands with single concurrency
-- handles session restart
-- handles swipe options
-- exports class (DeviceSettings) to manage device settings (get/update)
-- contains basic commands
-  - to find elements
-  - create/delete sessions
-  - handle timeouts
-  - set/update device settings
-- provides helper methods for commands
+## appium basedriver
+- 每个实例化都有一个单独的测试会话
+- 包含对caps的约束 （platformName必须存在等）
+- 验证功能
+- 运行具有单个并发性的命令
+- 处理会话重启
+- 处理滑动选项
+- DeviceSettings负责设备的get/update管理
+- 包含基本命令
+  - 找到元素
+  - 创建/删除会话
+  - 处理超时
+  - 设备的set/update设置
+- 为命令提供帮助方法
 
-## appium-ios-driver
-- can also run as standalone server (has a small server part that extends from appium-express)
-- supported strategies: "name", "xpath", "id", "-ios uiautomation", "class name", "accessibility id”
-- can start a simulator or a real device (if udid is given)
-  - runs for each type a huge set of instructions
+## appiium iosdriver
+- 也可以作为独立服务器运行（从appium-express继承了小部分服务）
+- 支持的策略：“name”，“xpath”，“id”，“-ios uiautomation”，“class name”，“accessibility id”
+- 可以启动一个模拟器或一个真实的设备（需要标明udid）
+  - 每个类型的说明
     - removeInstrumentsSocket
     - setBundleIdFromApp
     - createInstruments
@@ -67,192 +67,196 @@
     - setInitialOrientation
     - initAutoWebview
     - waitForAppLaunched
-  - all instructions are helper methods within driver.js
-- contains a more specific set of capability constraints
-- has logic to build and run Safari (safari-launcher) using appium-xcode
-- implements commands for iOS driver
-  - Selenium commands are compiled to ui-automator commands
-  - commands will be send out to uiAutoClient (appium-uiauto)
-- connects to appium remote debugger
+  - 所有帮助说明都在driver.js中
+- 包含一组更具体的功能约束
+- 有使用appium-xcode构建和运行Safari（safari-launcher）的逻辑
+- 实现iOSdriver的命令
+  - Selenium命令被编译为ui-automator命令
+  - 命令将会发送到uiAutoClient（appium-uiauto）
+- 连接到appium远程调试器
 
 ## appium-xcode
-- runs shell commands to return useful data from Xcode like
+- 运行shell命令从Xcode返回有用的数据，比如
   - getPath
   - getVersion
   - getAutomationTraceTemplatePath
   - getMaxIOSSDK
   - …
-- has an auto-retry built in
+- 内置自动重试
 
 ## appium-uiauto
-- wrapper for the iOS UI Automation framework
-- talks to it via socket connection
-- runs a command queue that get filled up by the sendCommand function
-- handles responses (as a buffer) from the ui-automation framework
-- uses osascript to rotate screenshots
-- provides method to bootstrap simulator/realdevice (dynamic-bootstrap)
-  - javascript files which are run in the iOS UI Automation context (not node)
-  - responsible to execute actual iOS UI Automation commands
-  - see [UIAutomation docs](https://developer.apple.com/library/ios/documentation/DeveloperTools/Reference/UIAutomationRef/)
-  - command flow is like
-    - Webdriver command -> iOS driver command -> uiauto-command
+- 封装 iOS UI Automation 框架的
+- 通过socket连接进行通信
+- 运行由sendCommand函数填充的命令队列
+- 处理来自ui-automation的响应（作为缓冲区）
+- 使用osascript旋转屏幕截图
+- 提供bootstrap simulator/realdevice (dynamic-bootstrap)的方法
+  - 在iOS UI自动化上下文（非节点）中运行的JavaScript文件
+  - 负责执行实际的iOS UI Automation命令
+  - 参考 [UIAutomation docs](https://developer.apple.com/library/ios/documentation/DeveloperTools/Reference/UIAutomationRef/)
+  - 命令流程就像
+    - Webdriver 命令-> iOS driver 命令 -> uiauto-命令
 
 ## appium-instruments
-- wrapper to run instruments commands
-- a lot of exec calls to talk to instruments binary
-- all of them take callbacks to propagate the result
-- uses "iwd" (instruments without delay) packages which have to be compiled first
-  - special Instruments package that gets rid of a delay between commands
-  - contains also older versions of iwd instrument (v4 - v7)
+- 封装运行instruments的命令
+- 很多exec调用与instruments二进制义互
+- 所有这些都采取回调来获取结果
+- 必须使用“iwd”包编译软件包
+  - 特殊的Instruments包不存在命令延迟
+  - 还包含较旧版本的iwd instrument（v4 - v7）
 
-## appium-ios-log
-- captures console, performance and crash logs from the iOS simulator or real device
-- by either calling tail to grab logs from a system path (simulator devices)
-- or by calling deviceconsole (real devices)
-- performance logs are getting grabbed using the remote-debugger
-- crash logs remain in “.crash” files on the system
+## appium-ios日志
+- 捕获iOS模拟器或实际设备的控制台，性能和崩溃日志
+- 通过调用tail来从系统路径获取日志（模拟器设备）
+- 或通过调用deviceconsole（实际设备） 
+- 使用远程调试器来抓取性能日志
+- 崩溃日志保留在系统上的“.crash”文件中
 
-## appium-ios-simulator
-- wrapper around iOS simulator app
-  - start and shutdown (kill all) simulators
-  - updating settings and locals
-  - update/clean safari
-  - grabs meta data about the simulator device
-- uses simctl to talk to the simulator
-- works for Xcode 6 and 7
+## appium-iOS-模拟器
+- 封装iOS模拟器应用程序
+  - 启动和关闭（杀死所有）模拟器
+  - 更新设置和本地
+  - 更新/清除 safari
+  - 获取有关模拟器设备的元数据
+- 使用simctl与模拟器通信
+- 适用于Xcode 6和7
 
-## authorize-ios
-- utility that pre-authorizes Instruments to run UIAutomation scripts against iOS devices
-- enables developer tools by calling “DevToolsSecurity —enable”
-- authorises user as developer calling “authorizationdb"
-- changes ownerships of simulator directories
+## authorize-iOS
+- 程序预先授权Instruments针对iOS设备运行UIAutomation脚本
+- 通过调用“DevToolsSecurity -enable”来启用开发人员工具
+- 授权用户作为开发人员调用“authorizationdb”
+- 改变模拟器目录的所有权
 
 ## node-simctl
-- wrapper around simctl binary (cli utility to control an iOS simulator)
-- executed as a subcommand of xcrun (locate or invoke developer tools from the command-line)
-- contains functions to
-  - install/remove apps
-  - launch and shutdown simulators
-  - create/erase/delete devices
-  - get list of devices
+- 封装simctl二进制（cli实用程序来控制iOS模拟器）
+- 作为xcrun的子命令执行（从命令行查找或调用开发人员工具）
+- 包含功能
+  - 安装/删除应用程序 
+  - 启动和关闭模拟器
+  - 创建/清除/删除设备
+  - 获取设备列表
 
 ## appium-cookies
-- simple package to create and receive cookies
-- used in the appium-ios-driver to implement jswonwire cookie commands within the web context
+- 简单的包来创建和接收cookie
+- 在appium-iosdriver中使用，以在Web上下文中实现jswonwire cookie命令
 
 ## appium-chromedriver
-- wrapper around the chrome driver
-- downloads and installs chromedriver binaries
-- launches, restarts and stops (or kills all) chrome instances
-- uses appium-jsonwp-proxy to send json wire protocol commands to the driver
+- 封装 chromedriver
+- 下载并安装chromedriver二进制文件
+- 启动，重新启动并停止（或杀死所有）chrome实例
+- 使用appium-jsonwp-proxy向驱动程序发送json wire protocol命令
 
-## jsonwp-proxy (part of appium-base-driver)
-- allows to send json wire protocol commands to a server that understands it (browser drivers)
-- parses response into json
-- allows to proxy requests to a proxied server
-- used for communication in appium-chromedriver and appium-selendroid-driver
+## jsonwp-proxy (部分appium basedriver)
+- 允许将json wire协议命令发送到了解它的服务器（浏览器驱动程序）
+- 解析json的响应
+- 允许代理服务器的请求
+- 用于在Chromium-Chromedriver和appium-selendroiddriver中进行通信
 
-## appium-android-driver
-- similar to appium-ios-driver it can run as standalone server
-- automates native, hybrid and mobile web apps on emulators/simulators and real devices
-- takes care of installing android packages to the device
-- runs chromedriver sessions if desired
-- contains a more specific set of capability constraints
-- uses appium-adb to talk to the emulator/simulator/realdevice
-- and appium-android-bootstrap to execute the actual commands
-- contains helpers to figure out which web view belongs to which app package vice versa
+## appium-androiddriver
+- 类似于appium-iosdriver，它可以作为独立服务运行
+- 自动化模拟器和实际设备上的本地，混合和移动Web应用程序
+- 负责安装Android软件包到设备
+- 如果需要，运行chromedriver会话
+- 包含一组更具体的功能约束
+- 使用appium-adb与emulator/simulator/realdevice进行交互
+- 和appium-android-bootstrap来执行实际的命令
+- 包含帮忙找出哪个网页视图属于哪个应用程序包，反之亦然
+
 
 ## appium-adb
-- wrapper around the Android Debug Bridge (adb)
-- contains a bunch of commands that are basically just rpc to the adb binary
-- houses jar files to run for special use cases like signing, verifying apps or moving manifests
-- allows special (mobile specific) emulator commands that are not related to the webdriver protocol like
-  - locking the screen
-  - press back button
-  - press home button
-  - set/get airplane mode
-  - set/get wifi state
-- captures logcat
-- handles emulator/simulator actions (e.g. reboot)
+- 封装 Android Debug Bridge（adb）
+- 包含一些基本的rpc到adb二进制的命令
+- 容纳jar文件来运行特殊用例，例如签名，验证应用程序或移动清单
+- 允许与webdriver协议无关的特殊（移动专用）模拟器命令
+  - 锁定屏幕
+  - 按返回按钮
+  - 按home按钮
+  - 设置/获取飞行模式
+  - 设置/获取wifi状态
+- 捕获logcat
+- 处理模拟器/模拟器动作（例如重启）
 
-## appium-android-bootstrap
-- JavaScript interface, and Java code, for interacting with Android UI Automator
-- builds AppiumBootstrap.jar that contains logic to execute the commands
-- counterpart to appium-uiauto
-- once started it creates a web socket connection to the device
-  - application provides start/shutdown/sendCommand interface
-- command flow is like:
-  - Selenium command -> appium-adb -> appium-android-bootstrap -> Java code using the Android UI Automator framework
+## appium-androidbootstrap
+- JavaScript界面​​和Java代码，用于与Android UI Automator进行交互
+- 构建包含执行命令的逻辑的AppiumBootstrap.jar
+- 对应的 iOS 上的 appium-uiauto
+- 一旦启动，就会创建一个到设备的web scoket连接
+  - 应用程序提供启动/关闭/发送命令接口
+- 命令流程如下：
+  - Selenium 命令 - > appium-adb - > appium-androidbootstrap - > 使用Android UI Automator 框架的 Java 代码
+
 
 ## appium-uiautomator
-- starts and shutdowns uiautomator server given by appium-android-bootstrap jar build
-- command flow is like
+- 启动和关闭uiautomator服务器由appium-android-bootstrap jar建立
+- 命令流程就像
   - appium-android-bootstrap:start -> appium-uiautomator:start -> appium-adb:install bootstrap
 
-## appium-selendroid-driver
-- similar to appium-android-driver it can run as standalone server
-- downloads and installs Selendroid using appium-selendroid-installer
-- contains several Selendroid specific logic to ensure a seamless integration
-- contains a more specific set of capability constraints
-- uses jsonwp-proxy to talk to the server
-- used appium-adb to enable commands not implemented in Selendroid
+## appium-selendroiddriver
+- 类似于appium-androiddriver，它可以作为独立服务运行
+- 使用appium-selendroid-installer下载并安装Selendroid
+- 包含几个Selendroid特定的逻辑，以确保无缝集成
+- 包含一组更具体的功能约束
+- 使用jsonwp-proxy与服务器交互
+- 使用appium-adb启用在Selendroid中未实现的命令
 
-## appium-selendroid-installer
-- contains and exports a setup logic to
-  - download Selendroid
-  - determine AndroidManifest location
-  - determine Server APK location
-  - extracting both files
-  - copying and cleaning files
+## appium-selendroid 安装程序
+- 包含并导出设置逻辑
+  - 下载Selendroid
+  - 确定AndroidManifest的位置
+  - 确定Server APK的位置
+  - 提取这两个文件
+  - 复制和清理文件
 
 ## appium-android-ime
-- allows to send and receive unicode characters from/to the Android device
-- encodes text into UTF-7 sends it to the device and recodes it as Unicode
-- used by appium-android-driver and appium-selendroid-driver
+- 允许从 Android 设备发送和接收 unicode 字符
+- 将文本编码为UTF-7将其发送到设备并将其重新编码为 Unicode
+- 由 appium-androiddriver 和 appium-selendroiddriver 使用
 
 ## appium-doctor
-- diagnoses, reports and fixes common Node, iOS and Android configuration issues before starting Appium
-- exposes cli command “appium-doctor"
-- it checks for
+- 在启动Appium之前诊断，报告和修复常见的Node，iOS和Android配置问题
+- 暴露cli命令“appium-doctor”
+- 它检查
   - Android:
-    - android sdk exists and configured properly
-    - env variables and path check
+    - android sdk存在并正确配置
+    - env变量和路径检查
   - iOS:
-    - xcode is installed (with command line tools)
-    - dev tools security check
-    - auth check
-    - node binary check
+    - 安装了xcode（使用命令行工具）
+    - 开发工具安全检查
+    - auth检查
+    - nodejs 检查
 
 ## appium-gulp-plugins
-- dev package with custom plugins used accross appium modules (for Appium development only)
-- contains task for
-  - e2e and unit tests (with coverage reporting)
-  - transpiling ES2016 into ES5
-  - static code analysis (jshint)
-  - watch task for dev
+- 具有定制插件的开发包使用交叉应用模块（仅适用于Appium开发）
+- 包含任务
+  - e2e和单元测试（覆盖率报告）
+  - 将ES2016 转换成 ES5 
+  - 静态代码分析（jshint）
+  - 开发人员的任务
 
 ## appium-remote-debugger
-- RPC client to connect Appium to iOS webviews
-- can connect to WebKit devtools
-- for iOS only
-- has two rpc client classes
-  - remote-debugger-rpc-client: uses tcp6 that connects to localhost:27753
-  - webkit-rpc-client: uses WebSockets to connect to ws://localhost:27753/devtools/page/${pageId}
+- RPC客户端将Appium连接到iOS网页浏览
+- 可以连接到WebKit devtools
+- 仅适用于iOS
+- 有两个rpc客户端类
+  - remote-debugger-rpc-client：使用连接到localhost的tcp6：27753
+  - webkit-rpc-client：使用WebSockets连接到ws：// localhost：27753 / devtools / page / $ {pageId}
 
 ## node-teen_process
-- helper module that exposes:
-  - exec: ES7 (async/await) implementation of exec that uses spawn under the hood
-  - SubProcess: cuts down boilerplate when using spawn (especially when using in an async/await context)
+- 助手模块暴露：
+  - exec：在引擎盖下使用spawn的exec的ES7（async / await）实现
+  - SubProcess：在使用spawn时减少样板（特别是在async / await上下文中使用时）
 
-## appium-logger
-- basic logger defaulting to npmlog with special consideration for running tests
-- exposes getLogger function that gets used by almost all Appium packages
-  - defers to already-running logger if there is one, so everything bubbles up
+## appium 日志
+- 运行时，日志器默认为 npmlog，
+- 暴露了几乎所有的Appium软件包使用的getLogger函数
+  - 如果有一个已经运行的记录器，那么所有的东西都会记录
 
 ## appium-support
-- utility functions used to support libs used across appium packages.
-- provides promise wrappers for some common operations like
-  - system methods (isWindows, isLinux …)
-  - utility methods like hasValue, escapeSpace
-  - a bunch of fs methods
-  - plist helpers for parsing and updating plist files
+- 用于支持跨应用程序包的库的实用程序函数。
+- 为一些常见的操作提供封装，如
+  - 系统方法（isWindows，isLinux ...）
+  - 实用程序方法，如hasValue，escapeSpace
+  - 一堆fs方法
+  - plist帮助解析和更新plist文件
+
+本文由 [校长](https://testerhome.com/xushizhao) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

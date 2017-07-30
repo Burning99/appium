@@ -20,22 +20,7 @@ Appium 还额外支持部分 [Mobile JSON Wire Protocol](https://github.com/Sele
 
 ### 使用 Appium Inspector 去定位元素
 
-Appium 为我们提供了一个灵活的工具(Appium Inspector)，使你不退出 Appium 应用就能定位你要查找的元素。使用 Appium Inspector（靠近 start test 按钮旁的一个 "i" 按钮），你可以直接点击预览窗口上的控件来获取它的 name 属性，或者直接在 UI 导航器中定位元素。
+这里之前的文档都已经 deprecated 了。最新的请参见：[The Inspector](https://github.com/appium/appium-desktop#the-inspector)
 
 
-### 概述
-
-Appium inspector 界面布局十分简单，由以下几个部分组成：UI 导航器，预览窗口，录制按钮和刷新按钮，还有交互工具。
-
-![步骤 1](https://raw.github.com/appium/appium/master/assets/InspectorImages/Overview.png)
-
-### 例子
-
-启动 Appium Inspector 后（也可以点击 Appium 应用右上方那个小小的 "i" 按钮去启动），你可以在预览窗口定位到任何元素。在本次测试中，我需要做的是找到 "show alert" 按钮的 id。
-
-![步骤 1](https://raw.github.com/appium/appium/master/assets/InspectorImages/Step1.png)
-
-
-为了找到这个按钮的 id，我在 inspector 的预览界面点击 "show alert" 按钮。然后 Appium inspector 就会在 UI 导航器高亮标记点击的元素，同时展示出我所点击的按钮的 id 和元素类型。
-
-![步骤 1](https://raw.github.com/appium/appium/master/assets/InspectorImages/Step2.png)
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译。由 [lihuazhang](https://github.com/lihuazhang) 校验。

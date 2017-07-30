@@ -2,7 +2,7 @@
 
 在 Windows 上，Appium 支持 Windows 与 Android 应用的自动化测试！
 
-获取更多信息请查阅 [Windows 应用测试](/docs/en/writing-running-appium/windows-app-testing.md)。
+获取更多信息请查阅 [Windows 应用测试](/docs/cn/writing-running-appium/windows-app-testing.md)。
 
 ## 在 Windows 上运行 Appium
 
@@ -10,7 +10,7 @@
 
 开始安装：
 
-   1. 下载最新版本的 [node 与 npm 工具](https://nodejs.org/download/release/v6.3.0/node-v6.3.0-x64.msi) 的 MSI (版本 >= 6.0)
+   1. 下载最新版本的 [node 与 npm 工具](https://nodejs.org/download/release/v6.3.0/node-v6.3.0-x64.msi) 的 MSI (版本 >= 6.0)  `npm` 和 `nodejs` 两个命令应该在你的 PATH 系统变量里。
    2. 打开你的 cmd 终端
    3. 运行 `npm install -g appium` 这条命令后，就会通过 NPM 去安装 Appium。
    4. 在命令行简单地输入 `appium` 就可以快速开启 Appium。
@@ -30,12 +30,14 @@
 
    1. 测试 Windows 应用，最基本的要求就是要打开 [开发者模式](https://msdn.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development)。
 
-  （查看[Windows app testing](/docs/en/writing-running-appium/windows-app-testing.md)，了解更多测试 Windows 应用测试的说明）
+  （查看[Windows app testing](/docs/cn/writing-running-appium/windows-app-testing.md)，了解更多测试 Windows 应用测试的说明）
 
 ## 运行 Appium
 
-查看 [server documentation](/docs/en/writing-running-appium/server-args.md) 可以查看所有的命令参数。
+查看 [server documentation](/docs/cn/writing-running-appium/server-args.md) 可以查看所有的命令参数。
 
 * 在 Windows 上运行 Appium.exe 需要管理员权限，或者当你以源码方式运行，你要在 cmd 运行时有管理员权限。
 * 在 Windows 上运行 Andoid 测试时，务必记得添加上`--no-reset` 或 `--full-reset` 参数。 
-* Android 有硬件加速仿真器；但他也是有限制的，更多信息请查阅该[文章](/docs/en/appium-setup/android-hax-emulator.md).
+* Android 有硬件加速仿真器；但他也是有限制的，更多信息请查阅该[文章](/docs/cn/appium-setup/android-hax-emulator.md).
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

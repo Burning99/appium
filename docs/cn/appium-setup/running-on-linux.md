@@ -6,4 +6,6 @@
 
 ### 配置（Android）
 
-Android 上的一些设置，与在 linux 上运行测试的方式，都是跟 Mac OS X 上的操作方式是相同的。 请查阅 [Android 设置文档](/docs/en/appium-setup/android-setup.md).
+Android 上的一些设置，与在 linux 上运行测试的方式，都是跟 Mac OS X 上的操作方式是相同的。 请查阅 [Android 设置文档](/docs/cn/appium-setup/android-setup.md).
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

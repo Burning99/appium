@@ -138,6 +138,6 @@ Appium 使用 remote debugger 创建和 webview 的交互连接。当在模拟�
 
 当在真机上运行用例时，appium 无法直接访问 web 视图，所以我们需要通过 USB 线缆来建立连接。我们使用 [ios-webkit-debugger-proxy](https://github.com/google/ios-webkit-debug-proxy)建立连接。
 
-如何安装和使用 iOS webkit debug proxy，请参考 [iOS webkit debug proxy](/docs/en/advanced-concepts/ios-webkit-debug-proxy.md) 
+如何安装和使用 iOS webkit debug proxy，请参考 [iOS webkit debug proxy](/docs/cn/advanced-concepts/ios-webkit-debug-proxy.md) 
 
 本文由 [tobecrazy](https://github.com/tobecrazy) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

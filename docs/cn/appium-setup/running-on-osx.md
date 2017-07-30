@@ -5,13 +5,12 @@
 ### 系统配置（iOS）
 
 * Appium 要求 Mac OS X 10.10 或更高的系统版本。
-* 确保你已经安装 Xcode 与 iOS 的 SDK。推荐使用 Xcode 7.1版本，因为早期版本的 Xcode 的版本对于可测试的 iOS 版本是受限的。查看下面的章节可以了解更多信息。
+* 确保你已经安装 Xcode 与 iOS 的 SDK。推荐使用 Xcode 7.1版本，因为早期版本的 Xcode 的版本对于可测试的 iOS 版本是受限的。查看下面的章节了解更多信息。
 * 你需要给 iOS 模拟器授权使用。请查看[下面章节](#authorizing-ios-on-the-computer)。
-* 如果你使用 Xcode 7.0 及以上版本，Instruments Without Delay(IWD) 已经失效了。你通过[这个方法](/docs/en/advanced-concepts/iwd_xcode7.md)去使用 IWD (它会使你的测试速度显著提升)。
+* 如果你使用 Xcode 7.x 及以上版本，Instruments Without Delay(IWD) 已经失效了。你通过[这个方法](/docs/cn/advanced-concepts/iwd_xcode7.md)去使用 IWD (它会使你的测试速度显著提升)。
 * 如果你使用 Xcode 6，使用 Appium 前你得提前启动模拟器。假如你想发送文本信息，你得改变他的默认设置，去开启虚拟键盘。开启键盘后，你就可以通过点击输入框，或使用快捷键（comand + K）去调出键盘。
 * 如果你使用 Xcode 6，Xcode 上有个模块叫 Devices（快捷键：comand-shift-2）。使用 Appium 的时候，你只需要在 capabilities 中的 devicesName 参数填上你的设备名字，每一个 sdk 版本都会对应一个设备。换句话说，如果你在 capabilities 里设置了 devicesName 为 "iPhone 5s" 以及 platformVersion 为 "8.0"，你就得保证在设备列表里，这是唯一一个使用 8.0 sdk 且名为"iPhone 5s"的设备。否则，Appium 就不会知道你想用的哪台设备。
-* 在 iOS 8，可以在`设置`里开启或者关闭 UIAutomation。该设置就在手机的设置里一个叫"Developer"页面。在使用模拟器或者真机去做自动化前，你需要去该页面验证 UIautomation 开关是否已经开启。
-
+* 在 iOS 8，可以在`设置`里开启或者关闭 UIAutomation。该设置就在手机的设置里一个叫"Developer"页面。在使用模拟器或者真机去做自动化前，你需要去该页面确保 UIautomation 开关已经开启。
 
 ### 授权 iOS 设备给你的电脑
 
@@ -147,3 +146,5 @@ $HOME/Library/Logs/CoreSimulator/*
 ```
 $HOME/Library/Developer/Xcode/DerivedData/*
 ```
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

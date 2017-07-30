@@ -1,6 +1,6 @@
 ## 调整网络连接
 
-Selenium[移动JSON协议规范]（https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md) 支持 [API](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md#104）获取和设置网络连接和一个设备。通过API的整数位掩码，分配给你的可能的状态为
+Selenium [移动 JSON 协议规范]（https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md) 支持一个获取和设置网络连接的[API](https://github.com/SeleniumHQ/mobile-spec/blob/master/spec-draft.md#104）。这个 API 会设置一个掩码，每一个可能的网络状态对应一个掩码
 
 | 值 (名称)          | 数据 | Wifi | 飞行模式 |
 | ------------------ | ---- | ---- | ------------- |
@@ -12,15 +12,27 @@ Selenium[移动JSON协议规范]（https://github.com/SeleniumHQ/mobile-spec/blo
 
 ### iOS
 
-不幸的是，目前Appium不支持iOS连接APISelenium网络
+不幸的是，目前 Appium 不支持这个 API。
 
 ### Android
 
-选择您要使用的设置，然后上面的从协议规范表发送正确的位掩码。
+Android 上有如下限制：
+
+#### 真机
+
+* 只能在 Android 6 或者以下，改变飞行模式
+* 只能在 Android 4.4 或者以下改变数据连接状态。5.0 或者以上必须 root 了之后才能工作。(比如，可以运行 _su_ )
+* 所有的 Android 版本都能改变 WI-FI 连接状态
+
+#### 模拟器
+
+* 只能在 Android 6 或者以下，改变飞行模式
+* 所有的 Android 版本都能改变数据连接
+* 所有的 Android 版本都能改变 WI-FI 连接状态
 
 ### Windows
 
-不幸的是，目前Appium不支持Windows连接APISelenium网络。
+不幸的是，目前 Appium 测试 Windows 应用，不支持这个 API。
 
 ```javascript
 // javascript
@@ -61,3 +73,5 @@ driver.getNetworkConnection().then(function (connectionType) {
   }
 });
 ```
+
+本文由 [testly](https://github.com/testly) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

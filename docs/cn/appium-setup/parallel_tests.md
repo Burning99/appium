@@ -1,6 +1,6 @@
 ## Android 并发测试
 
-Appium 给用户提供了在一个机器上启动多个 Android sessions 的方案。该方案所涉及的，都是通过不同参数来区分已经启动的多个 Appium 服务器来实现。
+Appium 给用户提供了在一个机器上启动多个 Android sessions 的方案。该方案只需要通过不同参数来启动的多个 Appium 服务。
 
 以下是启动多个 Android 会话的一些重要参数：
 
@@ -12,7 +12,7 @@ Appium 给用户提供了在一个机器上启动多个 Android sessions 的方�
 
 更多相关参数的信息可以参考 [这里](../writing-running-appium/caps.md) 。
 
-如果我们有两台设备，且他们的设备id分别为 43364 和 32456，我们可以通过以下命令启动两个不同的 Appium 服务器：
+如果我们有两台设备，且他们的设备 id 分别为 43364 和 32456，我们可以通过以下命令启动两个不同的 Appium 服务器：
 
 `node . -p 4492 -bp 2251  -U 32456`
 
@@ -22,8 +22,14 @@ Appium 给用户提供了在一个机器上启动多个 Android sessions 的方�
 
 如果你使用 chromedriver 或 selendroid，记得确保服务器的端口号是独一无二的。
 
+如果你使用 [appium-uiautomator2-driver](https://github.com/appium/appium-uiautomator2-driver)，
+需要给 systemPort 这个 capability 配置为不同的系统端口。因为有时候如果没有使用不同的端口，会出现冲突，比如[这个问题](https://github.com/appium/appium/issues/7745).
+
 ### iOS 并发测试
 
 十分不幸，目前并不能在本地运行 iOS 的并发测试。iOS 同一时间只能启动一个模拟器，不像 Andoid 可以同时多个模拟器去运行测试。
 
-如果你想运行 iOS 的并发测试，你需要使用 Sauce 上传你的 Appium 测试脚本，然后它能在你的账号下运行多个iOS 跟 Android的并发测试。查看更多相关信息可以查看 [这里](https://docs.saucelabs.com/tutorials/appium/)。
+如果你想运行 iOS 的并发测试，你需要使用 Sauce 上传你的 Appium 测试脚本，然后就可以运行多台 iOS 和 Android 的并发测试，只要你的账号允许。查看更多相关信息可以查看 [这里](https://docs.saucelabs.com/tutorials/appium/)。
+
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。

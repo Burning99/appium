@@ -1,136 +1,89 @@
-## Appium on iOS Real Devices
+## 在 iOS 真机上运行 Appium
 
-Appium has support for iOS real device testing.
+Appium 已支持真机的测试。
 
-### Running your tests with Appium
+### 使用 Appium 运行你的测试
 
-Once your device and app are configured, you can run tests on that device by
-passing the `udid` desired capability, and the bundle ID (via the `bundleId`
-capability, if the app is installed on the device) or the path to the `.ipa` or
-`.app` file via the `app` desired capability.
+把设备的 udid 传给 `udid` 这个 capability。把应用的 bundle ID 传给 `app` 这个 capability，如果你的应用已经在手机上安装好了。如果应用未安装，那么需要将 `.ipa` 或者 `.app` 文件的路径传给 `app` 这个 capability。一旦你的设备和应用已经配置好，你就可以在那个设备上运行测试了。
 
 ### Desired Capabilities
 
-You can launch the app on a device by including the following desired
-capabilities in your tests:
+通过在测试里使用以下的 capability，你可以在某个设备加载这个应用：
 
-* `app` or `bundleId` - specifies the application, or, if it is already installed,
-   simply the bundle identifier of the app so that Appium can launch it
-* `udid` - the specific id of the device to test on. This can also be set to
-   `auto` if there is only a single device, in which case Appium will determine
-   the device id and use it
+* `app` 或者 `bundleId` - 指定应用，或者如果应用已经安装到手机上了，只需简单地指定应用的 bundleID。这样 Appium 就可以加载该应用了。
+* `udid` - 被测设备的 id。如果只有一台设备连接的时候，可以设置为 `auto`，Appium 能自动识别设备 id 并使用它。
 
-Refer to the [Appium server capabilities](/docs/en/writing-running-appium/caps.md) page for more detail on
-the capabilities that you can use.
+更多的细节参考 [Appium server capabilities](/docs/cn/writing-running-appium/caps.md)
 
-### Required Software
+### 必备的软件
 
-Appium iOS real device support depends on a central third-party software suite,
-[libimobiledevice](http://www.libimobiledevice.org/), which is easily installable
-with [Homebrew](http://brew.sh/))
+Appium iOS 真机支持依赖一个重要的第三方软件套件 [libimobiledevice](http://www.libimobiledevice.org/)，使用 [Homebrew](http://brew.sh/) 可以轻易地安装好。
 ```
 brew install libimobiledevice
 ```
 
-## Configuring iOS Real Device Tests: Xcode 7 and iOS 9.3 or below
+## 在 Xcode 7 和 iOS 9.3 或者以下，配置 iOS 真机设备测试
 
-Automating real devices with iOS 9.3 or below, using Xcode 7.3 or below (i.e.,
-_Instruments_-based testing) requires a relatively small amount of configuration.
-The central requirement is to have a build of your app signed with a development
-provisioning profile. Unfortunately Apple has removed all of its documentation
-on using older versions of Xcode, but a good overview of the process can be
-found [here](https://medium.com/ios-os-x-development/ios-code-signing-provisioning-in-a-nutshell-d5b247760bef#.5hirl92tn)
-and [here](https://engineering.nodesagency.com/articles/iOS/Understanding-code-signing-for-iOS-apps/).
+在 iOS 9.3 或者以下，使用 Xcode 7.3 或者以下对真机进行自动化 (比如，基于 Instruments 的测试) 需要相对较少的配置。主要就是需要你的应用是使用开发者证书签名的。 不幸的是，苹果移除了所有使用老版本 Xcode 的文档，不过你可以从[这里](https://medium.com/ios-os-x-development/ios-code-signing-provisioning-in-a-nutshell-d5b247760bef#.5hirl92tn)，[这里](https://engineering.nodesagency.com/articles/iOS/Understanding-code-signing-for-iOS-apps/)找到如何操作。
 
-In a little more detail, to get started on a real device, you will need the following:
+更详细地说， 在真机上开始测试, 你需要如下步骤：
 
-* An [Apple Developer ID](https://developer.apple.com/programs/ios/) and a valid
-Developer Account with a configured development certificate and provisioning
-profile.
-* A valid iOS Development Certificate and Provisioning Profile are necessary to
-test on a real device. Your app will also need to be signed. You can find
-information about this in the [Apple documentation](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/TestingYouriOSApp/TestingYouriOSApp.html).
-* An iPad or iPhone. Make sure this has been set up for development in Xcode.
-* A signed `.app` or `.ipa` file of your app, or the source code to build one.
-* A Mac with [Xcode](https://developer.apple.com/xcode/) and the Xcode Command
-Line Developer Tools.
+* 一个 [Apple Developer ID](https://developer.apple.com/programs/ios/) 和一个有效的配置好开发者证书和 provisioning profile 的开发者账号。
+* 要在真机上测试，一个有效的 iOS 开发证书和 Provisioning Profile 是必须的。被测应用也必须被签名。更多信息可以在 [Apple documentation](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/TestingYouriOSApp/TestingYouriOSApp.html) 找到。
+* 一个苹果设备： iPad 或者 iPhone 都可以。确保已经在 Xcode 里已经配置好了开发机。
+* 一个已经签名的 `.app` 或则 `.ipa` 文件，或者使用源码编一个。
+* 一台 Mac 电脑，装好了 [Xcode](https://developer.apple.com/xcode/) 和 Xcode Command
+Line Developer Tools。
 
-Appium handles installing the application to the device, using `ideviceinstaller`
-(part of `libimobiledevice`), but it is sometimes easier to pre-install your app
-using Xcode to ensure there are no problems (see the [iOS deploy](ios-deploy.md)
-document for more information).
+Appium 使用 `ideviceinstaller` (`libimobiledevice` 套件的一部分)来处理应用安装问题。但是有时候使用 Xcode 提前安装好应用确保没有问题更加容易。(更多参考 [iOS deploy](ios-deploy.md))。
 
-### Troubleshooting ideas
+### 排障思路
 
-0. Make sure UDID is correct by checking it in Xcode Organizer or iTunes. It
-   is a long string (20+ chars).
-0. Make sure that you can run your tests against the Simulator.
-0. Double check that you can invoke your automation from Instruments.
-0. Make sure Instruments is not already running.
-0. Make sure UI Automation is enabled on your device. Settings -> Developer -> Enable UI Automation
+0. 确保 UDID 是无误的，可以通过 Xcode Organizer 或者 iTunew 查看。留意 UDID 是很长的字符串（20+ 字符）。
+0. 确保你可以在模拟器运行你的测试。
+0. 重复确认通过 Instrumens 是否可以启动你的自动化。
+0. 确保 Instruments 不在运行状态中。
+0. 确保 UI Automation 在你的设备已经打开。设置 -> 开发者 -> 使用 UI Automation。
 
+##  在 Xcode 8 和 iOS 9.3 以上配置 iOS 真机设备测试
 
-
-## Configuring iOS Real Device Tests: Xcode 8 and iOS 9.3 and above
-
-In addition to the dependency on `libimobiledevice`, Appium support for real
-devices running iOS 9.3 and above using Xcode 8+ also depends on `ios-deploy`,
-which is easily available through [npm](https://www.npmjs.com/package/ios-deploy)
+作为对 `libimobiledevice` 依赖的补充，Appium 对 iOS 9.3 及以上和 Xcode 8 及以上的支持依赖 `ios-deploy`,
+通过 [npm](https://www.npmjs.com/package/ios-deploy) 可以方便地安装：
 ```
 npm install -g ios-deploy
 ```
 
-Unfortunately, Apple changed the way it makes testing available, and the new
-way requires the installation of a helper application onto the device, through
-which the application under test is automated. While this is simple in theory,
-the hoops of code signing and provisioning applications for development and
-testing can make this a bit of a headache.
+不幸地是，苹果改变了以往的测试方法。新的方法需要安装一个帮助应用到设备上去，通过这个应用，自动化测试才能进行。说起来挺简单，但是代码签名和生成供开发和测试的应用，让人有一点头疼。
 
-The application that Appium installs is called `WebDriverAgent-Runner` (found
-[here](https://github.com/facebook/WebDriverAgent/)), and to do the install
-Appium needs to be able to configure its build.
+Appium 安装的应用叫 `WebDriverAgent-Runner` (可以在[这里](https://github.com/facebook/WebDriverAgent/))找到，要想安装这个应用，Appium需要能配置这个构建。
 
+### 基本 (自动化) 配置
 
-### Basic (automatic) configuration
+在 iOS 真机上设置和运行 Appium XCUItest，最方便的方法是使用自动化配置策略。有两种方式：
 
-The easiest way to get up-and-running with Appium's XCUITest support on iOS
-real devices is to use the automatic configuration strategy. There are two ways
-to do this:
-
-*   Use the `xcodeOrgId` and `xcodeSigningId` desired capabilities:
+*   使用 `xcodeOrgId` 和 `xcodeSigningId` desired capabilities:
 ```json
     {
       "xcodeOrgId": "<Team ID>",
       "xcodeSigningId": "iPhone Developer"
     }
 ```
-*   Create a `.xcconfig` file somewhere on your file system and add the following to it:
+*   在你的文件系统里创建一个 `.xcconfig` 文件，内容是：
 ```
     DEVELOPMENT_TEAM = <Team ID>
     CODE_SIGN_IDENTITY = iPhone Developer
 ```
-In either case, the Team ID is a unique 10-character string generated by Apple
-that is assigned to your team. You can find your Team ID using your developer
-account. Sign in to [developer.apple.com/account](http://developer.apple.com/account),
-and click Membership in the sidebar. Your Team ID appears in the Membership
-Information section under the team name. You can also find your team ID listed
-under the "Organizational Unit" field in your iPhone Developer certificate in
-your keychain.
+以上任何一个方式，Team ID 是一个 10 个字符长的字符串，苹果生成这个字符串，分配给你的团队。你可以在你的开发者账号里找到你的 Team ID。登录 [developer.apple.com/account](http://developer.apple.com/account)，然后点击边栏上的 Membership。你的 Team ID 在 Membership
+Information 部分的团队名字下面。你也可以在 keychain 里的 iPhone 开发者证书里的 "Organizational Unit" 属性找到你的 Team ID。
 
-Note that these are mutually exclusive strategies; use _either_ the
-`xcodeConfigFile` capability or the combination of `xcodeOrgId` and `xcodeSigningId`.
+注意这是互斥的策略；要么用 `xcodeConfigFile` capability， 要么用 `xcodeOrgId` and `xcodeSigningId` 的组合。
 
-Once this configuration is done, it should just be a matter of starting your test
-specifying a real device in your `udid` desired capability.
+当以上的配置搞定后，只需再指定 `udid` capability 就可以在真机上开始测试了。
 
-If this has not worked it will usually manifest itself in the Appium server logs
-as some error followed by `info XCUITest xcodebuild exited with code '65' and
-signal 'null'`. This usually means that the necessary code signing is not set up
-correctly. Go on to the [Basic (manual) configuration](https://github.com/imurchie/appium-xcuitest-driver/blob/isaac-rs/docs/real-device-config.md#basic-manual-configuration)
-to fix.
+如果还是不工作的话，通常会在 Appium server 的日志里显示一些错误如：`info XCUITest xcodebuild exited with code '65' and signal 'null'`。这通常表示必要的代码签名没配置正确。 去看下 [Basic (manual) configuration](https://github.com/imurchie/appium-xcuitest-driver/blob/isaac-rs/docs/real-device-config.md#basic-manual-configuration)
+这个文档，参试修复下。
 
-If the `WebDriverAgentRunner` is successfully installed on the device, but in the
-Appium logs there is an error message something like:
+如果 `WebDriverAgentRunner` 成功的在设备上安装好，但是在 Appium server 日志里还是有如下错误信息：
 ```
 2017-01-24 09:02:18.358 xcodebuild[30385:339674] Error Domain=com.apple.platform.iphoneos Code=-12 "Unable to launch com.apple.test.WebDriverAgentRunner-Runner" UserInfo={NSLocalizedDescription=Unable to launch com.apple.test.WebDriverAgentRunner-Runner, NSUnderlyingError=0x7fa839cadc60 {Error Domain=DTXMessage Code=1 "(null)" UserInfo={DTXExceptionKey=The operation couldn’t be completed. Unable to launch com.apple.test.WebDriverAgentRunner-Runner because it has an invalid code signature, inadequate entitlements or its profile has not been explicitly trusted by the user. : Failed to launch process with bundle identifier 'com.apple.test.WebDriverAgentRunner-Runner'}}}
 2017-01-24 09:02:18.358 xcodebuild[30385:339674] Error Domain=IDETestOperationsObserverErrorDomain Code=5 "Early unexpected exit, operation never finished bootstrapping - no restart will be attempted" UserInfo={NSLocalizedDescription=Early unexpected exit, operation never finished bootstrapping - no restart will be attempted}
@@ -138,109 +91,85 @@ Appium logs there is an error message something like:
 Testing failed:
 	Test target WebDriverAgentRunner encountered an error (Early unexpected exit, operation never finished bootstrapping - no restart will be attempted)
 ```
-The problem is that the developer is not trusted on the device. If you manually
-try to run the `WebDriverAgentRunner` app on the device, you will see a popup
-message:
+这个问题是因为开发者在这台设备上不被信任。如果你在设备上手动运行 `WebDriverAgentRunner`，你会看到一个错误页面弹出来：
 
 ![Untrusted developer](real-devices-img/untrusted-dev.png)
 
-You can go to Settings => General => Device Management on the device to trust
-the developer and allow the `WebDriverAgentRunner` app to be run (see [Apple
+你可以去设备中的 Settings => General => Device Management 信任这个开发者，允许 `WebDriverAgentRunner` 运行 (参考 [Apple
 documentation for more information](https://support.apple.com/en-us/HT204460)).
 
 
-### Basic (manual) configuration
+### 基本 (手动) 配置
 
-There are many cases in which the basic automatic configuration is not enough. This
-usually has to do with code signing and the configuration of the project to be
-able to be run on the real device under test. Often this happens when the
-development account being used is a "Free" one, in which case it is not possible
-to create a wildcard provisioning profile, and will often not create one for the
-default application bundle.
+很多情况，基本的自动配置满足不了需求。这通常和真机运行上的代码签名和项目配置有关。这常常发生在免费的开发者账号上，免费的开发者账号不能创建 wildcard provisioning profile，也不能为应用创建默认的配置文件。
 
-This will manifest as something like an error that Xcode **failed to create
-provisioning profile**:
+Xcode **创建 provisioning profile 失败** 的错误如下：
 
 ![No provisioning profile](real-devices-img/no-prov-prof.png)
 
-The easiest way around this is to create a provisioning profile by opening
-[Xcode](https://developer.apple.com/xcode/) and creating a new project:
+最容易的解决方案就是打开 [Xcode](https://developer.apple.com/xcode/)创建一个新工程：
 
 ![Create new project](real-devices-img/create-new-project.png)
 
-The type does not matter, other than it being "iOS". "Single View Application"
-is the easiest:
+类型不重要，只要是 "iOS"。用最简单的 "Single View Application" 即可：
 
 ![Create single page](real-devices-img/create-single-page.png)
 
-The important part is to use a unique "Product Name" and "Organization Name". Also,
-at this point, specify your "Team".
+重要的地方是要用唯一的 "Product Name" 和 "Organization Name". 然后，在这里，指定你的 "Team"。
 
 ![Setup bundle](real-devices-img/set-up-bundle.png)
 
-You can confirm that the provisioning profile was created by looking at the "Project"
-tab:
+你可以在 "Project" tab 确认 provisioning profile 是否创建成功。
 
 ![Project pane](real-devices-img/project-prov-prof.png)
 
-Or by going into your account preferences and seeing the provisioning profile:
+或者去你的账号首选项里看看 provisioning profile：
 
 ![Check provisioning profile](real-devices-img/check-prov-prof.png)
 
-At this point you have a valid provisioning profile. Make note of the bundle id
-you associated with it, and add that in the `updatedWDABundleId` desired
-capability for your tests. Then follow the [initial instructions for automatic
-configuration](#basic-automatic-configuration).
+现在你就有了一个有效的 provisioning profile。 记住你关联这个 profile 的 bundle id，然后放到 `updatedWDABundleId` 这个 desired capability 里。然后跟着[前面的自动配置教程](#basic-automatic-configuration)操作即可。
 
 
-### Full manual configuration
+### 全部手动配置
 
-Alternatively, the provisioning profile can be manually associated with the
-project (keep in mind that this will have to be done each time the WebDriverAgent
-is updated, and is _not_ recommended):
+另外，可以手动把 provisioning profile 和项目关联在一起。 (记住如果使用这个方法，每次 WebDriverAgent 更新，都要做一次。所以我们不推荐这个方法)：
 
-*   Find out where your Appium installation is:
+*   找到你的 Appium 的安装目录
 ```
     $ which appium
     /path/where/installed/bin/appium
 ```
-*   Given this installation location, `/path/where/installed/bin/appium`, `WebDriverAgent`
-    will be found in `/path/where/installed/lib/node_modules/appium/node_modules/appium-xcuitest-driver/WebDriverAgent`.
-    Open a terminal and go to that location, then run the following in order to
-    set the project up:
+*   假设安装目录是： `/path/where/installed/bin/appium`，那么 `WebDriverAgent`
+    在 `/path/where/installed/lib/node_modules/appium/node_modules/appium-xcuitest-driver/WebDriverAgent`。
+    打开终端到那个目录，然后按以下命令操作：
 ```
     mkdir -p Resources/WebDriverAgent.bundle
     ./Scripts/bootstrap.sh -d
 ```
-*   Open `WebDriverAgent.xcodeproj` in Xcode. For **both** the `WebDriverAgentLib`
-    and `WebDriverAgentRunner` targets, select "Automatically manage signing"
-    in the "General" tab, and then select your `Development Team`. This
-    should also auto select `Signing Ceritificate`. The outcome should look as
-    shown below:
+*   在 Xcode 里打开 `WebDriverAgent.xcodeproj`。 对于 `WebDriverAgentLib`
+    和 `WebDriverAgentRunner` 两个 target，都选择 "General" tab 里的 "Automatically manage signing"
+    然后选择你的 `Development Team`。这也会自动选择 `Signing Ceritificate`。大概的样子如下：
 
     ![WebDriverAgent in Xcode project](real-devices-img/xcode-config.png)
 
-    * Xcode may fail to create a provisioning profile for the `WebDriverAgentRunner`
-      target:
+    * Xcode 可能会创建不了 `WebDriverAgentRunner` 的 provisioning profile：
 
       ![Xcode provisioning fail](real-devices-img/xcode-facebook-fail.png)
 
-    * This necessitates manually changing the bundle id for the target by going
-      into the "Build Settings" tab, and changing the "Product Bundle Identifier"
-      from `com.facebook.WebDriverAgentRunner` to something that Xcode will accept:
+    * 这时候需要在 "Build Settings" tab 里手动改 bundle id。把 "Product Bundle Identifier"
+      从 `com.facebook.WebDriverAgentRunner` 改成 Xcode 能采用的：
 
       ![Xcode bundle id](real-devices-img/xcode-bundle-id.png)
 
-    * Going back to the "General" tab for the `WebDriverAgentRunner` target, you
-      should now see that it has created a provisioning profile and all is well:
+    * 在回到 "General" tab 里的 `WebDriverAgentRunner` target，现在你可以看到一个 provisioning profile 创建成果了:
 
       ![Xcode provisioning profile](real-devices-img/xcode-facebook-succeed.png)
 
-*   Finally, you can verify that everything works. Build the project:
+*   最后，你可以验证一切都 OK 了。 构建这个项目：
 ```
     xcodebuild -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner -destination 'id=<udid>' test
 ```
-If this was successful, the output should end with something like:
+如果成果了，最后的输出会像下面这样：
 ```
     Test Suite 'All tests' started at 2017-01-23 15:49:12.585
     Test Suite 'WebDriverAgentRunner.xctest' started at 2017-01-23 15:49:12.586
@@ -249,15 +178,13 @@ If this was successful, the output should end with something like:
         t =     0.00s     Start Test at 2017-01-23 15:49:12.588
         t =     0.00s     Set Up
 ```
-*   To completely verify, you can try accessing the WebDriverAgent server status
-    (**note:** you _must_ be on the same network as the device, and know its IP
-    address, from Settings => Wi-Fi => Current Network):
+*   要完整验证的话，你可以试试看访问 WebDriverAgent server 的状态 (**注意：** 你必须和手机设备同一个网段，你可以从 Settings => Wi-Fi => Current Network 找到手机当前的 IP。):
 ```
     export DEVICE_URL='http://<device IP>:8100'
     export JSON_HEADER='-H "Content-Type: application/json;charset=UTF-8, accept: application/json"'
     curl -X GET $JSON_HEADER $DEVICE_URL/status
 ```
-    You ought to get back output something like this:
+    你会得到如下输出：
 ```
     {
       "value" : {

@@ -2,7 +2,7 @@
 
 准备在真机上运行 Appium 之前，你需要做好以下几件事：
 
-1. 使用特定的 device-targeted 参数去构建你的 app
+1. 使用特定设备相关的参数去构建你的 app
 2. 使用第三方工具 [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller) 将你构建的包部署到你的设备上 
 
 ### Xcodebuild 的参数：
@@ -24,7 +24,7 @@ CODE_SIGN_IDENTITY (代码签名标识)
 
 ```
 
-PROVISIONING_PROFILE 虽然在可用的命令列表中消失，但还是有必要设置的。
+PROVISIONING_PROFILE 虽然在可用的命令列表中移除了，但还是有必要设置的。
 
 在 xcodebuild 命令中指定 "CODE_SIGN_IDENTITY" 与 "PROVISIONING_PROFILE" 的设置：
 
@@ -32,7 +32,7 @@ PROVISIONING_PROFILE 虽然在可用的命令列表中消失，但还是有必�
 xcodebuild -sdk <iphoneos> -target <target_name> -configuration <Debug> CODE_SIGN_IDENTITY="iPhone Developer: Mister Smith" PROVISIONING_PROFILE="XXXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXX"
 ```
 
-一旦成功，app 就会被构建到 ```<app_dir>/build/<configuration>-iphoneos/<app_name>.app``` 目录下。
+一旦成功，app 就会被构建到 `<app_dir>/build/<configuration>-iphoneos/<app_name>.app` 目录下。
 
 ### 使用 ideviceinstaller 部署
 
@@ -47,3 +47,5 @@ xcodebuild -sdk <iphoneos> -target <target_name> -configuration <Debug> CODE_SIG
 ```
 
 下一部分：[在真机上运行 Appium](real-devices.md)
+
+本文由 [thanksdanny](https://testerhome.com/thanksdanny) 翻译，由 [lihuazhang](https://github.com/lihuazhang) 校验。
